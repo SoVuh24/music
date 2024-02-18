@@ -1,16 +1,10 @@
-import sqlite3 as sql3
+class listner():
+    def __init__(self, login):
+        self.login = login
+        
 
-conn = sql3.connect('example.db')
-cursor = conn.cursor()
+class kompozitor(listner):
+    def __init__(self): 
+        print(login)
+        
 
-# Выполняем запрос на удаление таблицы
-cursor.execute("DROP TABLE IF EXISTS SoVa")
-
-# Выполняем запрос на удаление строки из таблицы
-cursor.execute("DELETE FROM users WHERE id = 1")
-
-# Сохраняем изменения
-conn.commit()
-
-# Закрываем соединение с базой данных
-conn.close()
