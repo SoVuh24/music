@@ -10,9 +10,11 @@ class first_in:
                             ["music_add ", " - add to your music by number."], 
                             ["music_add_kompozitor ", " - add to your music by kompozitor."]]
         self.kompozitor_commands = [["create_music", " - create your new music."],
-                                    ["view_my_music_kompozitor", " - print your music (kompozitor)."]]
+                                    ["view_my_music_kompozitor", " - print your music (kompozitor)."],
+                                    ["del_your_music_kompozitor", " - delete your music."]]
         self.administrator_commands = [["changing_users", " - changing users."],
-                                       ["view_all_users", " - show all users."]]
+                                       ["view_all_users", " - show all users."],
+                                       ["del_music", " - delete music."]]
     
     def login_in(self):
         while True:
@@ -206,6 +208,20 @@ class kompozitor(listner):
             print("Name music: ", row[1])
             print("Time: ", str(row[2] // 60) + ":" + str(row[2] % 60))
             print("Kompozitor: ", row[3], end="\n\n")
+    
+    def del_your_music_kompozitor(self):
+        while True:
+            temp = input("Enter name your music for delete >> ")
+            if temp != "exit":
+                cursor.execute("SELECT * FROM music WHERE name = ?", (temp,))
+                row = cursor.fetchone()
+                if row[3] == self.login:
+                    cursor.execute("DELETE FROM music WHERE id = ?", (row[0],))
+                    break
+                else:
+                    print("You cant delete this music.")
+            else:
+                break
    
     def in_system(self):
         while self.exit:
@@ -221,6 +237,8 @@ class kompozitor(listner):
                     self.create_music()
                 case "view_my_music_kompozitor":
                     self.view_my_music_kompozitor()
+                case "del_your_music_kompozitor":
+                    self.del_your_music_kompozitor()
                 case _:
                     self.music_add()
                     self.music_add_kompozitor()
@@ -265,6 +283,23 @@ class administrator(kompozitor, listner):
                     break
                 case "next":
                     print10rows()
+
+    def del_music(self):
+        while True:
+            temp = input("Enter the parameter by which you want to delete the music id/name/kompozitor >> ")
+            if temp != "exit":
+                temp2 = input("Enter parameter >> ")
+                if temp2 != "exit":
+                    match temp:
+                        case "id":
+                            cursor.execute("DELETE FROM music WHERE id = ?", (temp2,))
+                        case "name":
+                            cursor.execute("DELETE FROM music WHERE name = ?", (temp2,))
+                        case "kompozitor":
+                            cursor.execute("DELETE FROM music WHERE kompozitor = ?", (temp2,))
+
+            else:
+                break
     
     def in_system(self):
         while self.exit:
@@ -280,10 +315,14 @@ class administrator(kompozitor, listner):
                     self.create_music()
                 case "view_my_music_kompozitor":
                     self.view_my_music_kompozitor()
+                case "del_your_music_kompozitor":
+                    self.del_your_music_kompozitor()
                 case "changing_users":
                     self.changing_users()
                 case "view_all_users":
                     self.view_all_users()
+                case "del_music":
+                    self.del_music()
                 case _:
                     self.music_add()
                     self.music_add_kompozitor()
