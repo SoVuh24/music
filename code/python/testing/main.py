@@ -1,4 +1,3 @@
-import sys
 import sqlite3 as sql3
 
 class first_in:
@@ -215,11 +214,14 @@ class kompozitor(listner):
             if temp != "exit":
                 cursor.execute("SELECT * FROM music WHERE name = ?", (temp,))
                 row = cursor.fetchone()
-                if row[3] == self.login:
-                    cursor.execute("DELETE FROM music WHERE id = ?", (row[0],))
-                    break
+                if row is not None:
+                    if row[3] == self.login:
+                        cursor.execute("DELETE FROM music WHERE id = ?", (row[0],))
+                        break
+                    else:
+                        print("You cant delete this music.")
                 else:
-                    print("You cant delete this music.")
+                    print("This name is not found.")
             else:
                 break
    
