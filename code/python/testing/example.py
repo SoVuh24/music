@@ -1,10 +1,4 @@
-class listner():
-    def __init__(self, login):
-        self.login = login
-        
+temp = ("11111")
+temp_ID = ("22222")
 
-class kompozitor(listner):
-    def __init__(self): 
-        print(login)
-        
-
+print("UPDATE users SET " + temp + " = ? WHERE id = " + temp_ID)

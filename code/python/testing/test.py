@@ -3,24 +3,14 @@ import sqlite3 as sql3
 conn = sql3.connect('example.db')
 cursor = conn.cursor()
 
-#cursor.execute("CREATE TABLE users (id INTEGER PRIMARY KEY, rights TEXT, name TEXT, password TEXT, my_music TEXT)")     "10 20 35 1".split(" ") [10,20,35,1]
+cursor.execute('''CREATE TABLE IF NOT EXISTS admin (id INTEGER PRIMARY KEY, id_music INTEGER, name TEXT, time INTEGER, kompozitor TEXT)''')
 
+cursor.execute('''CREATE TABLE IF NOT EXISTS sova (id INTEGER PRIMARY KEY, id_music INTEGER, name TEXT, time INTEGER, kompozitor TEXT)''')
 
-cursor.execute("SELECT * FROM music")
-rows1 = cursor.fetchall()
-for row in rows1:
-    print(row)
+#cursor.execute("INSERT INTO users (rights, login, password) VALUES (?, ?, ?)", ('administrator', 'admin', 'admin_pas'))
+#cursor.execute("INSERT INTO users (rights, login, password) VALUES (?, ?, ?)", ('listner', 'sova', 'password'))
 
-cursor.execute("SELECT * FROM music WHERE kompozitor = ?", ("10AGE",))
-
-rows = cursor.fetchall()
-
-for row in rows:
-    print("ID:", row[0])
-    print("Название песни:", row[1])
-    print("Продолжительность:", str(row[2] // 60) + ":" + str(row[2] % 60))
-    print("Исполнитель:", row[3], end="\n\n")
-
+conn.commit()
 conn.close() # close connect with data base 
 
 
